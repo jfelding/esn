@@ -293,7 +293,7 @@ def dimension_reduce(h,pca_object=None,n_PCs = None):
         print(f'Using {n_PCs} principal components, and min(H.shape)={min(H.shape)}')
         if n_PCs > min(H.shape):
             n_PCs = min(H.shape)-1
-            print('n_PCs can be maximally min(Hm,Hn), using n_PCs = {n_PCs}')
+            print(f'n_PCs can be maximally min(Hm,Hn), using n_PCs = {n_PCs}')
         pca_object = PCA(n_components=n_PCs,whiten=False)
         H_r = pca_object.fit_transform(H)
         
