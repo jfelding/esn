@@ -20,16 +20,6 @@ def split_train_label_pred(sequence, train_length, pred_length,transient_length=
     pred_targets = sequence[train_length+1 :train_length +1 + pred_length]
     return train_inputs, train_targets, pred_targets
 
-
-"""def split_train_label_pred(sequence, train_length, pred_length):
-    print('heim code')
-    train_end = train_length + 1
-    train_seq = sequence[:train_end]
-    inputs = train_seq[:-1]
-    labels = train_seq[1:]
-    pred_labels = sequence[train_end:train_end + pred_length]
-    return inputs, labels, pred_labels"""
-
 def scale(x, scale_min=-1, scale_max=1, training_min=None, training_max=None, inv=False,**kwargs):
     """Scale array 'x' to values in (scale_min,scale_max)"""
     if inv:
