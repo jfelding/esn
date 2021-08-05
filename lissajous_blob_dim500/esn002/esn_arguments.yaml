@@ -1,7 +1,7 @@
 Model_Errors:
-- 'MSE-IMED: MSE in standardizing-transform-space: 4.78e-05'
-- 'MSE after rescaling,iST of preds and targets: 1.24e-05'
-- 'MSE after rescaling,iST of preds wrt. untouched targets: 1.24e-05'
+- 'MSE-IMED: MSE in standardizing-transform-space: 3.01e-03'
+- 'MSE after rescaling,iST of preds and targets: 7.83e-04'
+- 'MSE after rescaling,iST of preds wrt. untouched targets: 7.83e-04'
 Npred: 100
 Ntrain: 1200
 Ntrans: 200
@@ -11,13 +11,13 @@ dtype: float64
 eps: 0.01
 lstsq_method: svd
 lstsq_thresh: 0.001
-n_PCs: 500
+n_PCs: 1000
 neuron_connections: 10
 neuron_dist: normal
 plot_prediction: true
 random_seed: '2147483648'
 save_condition: if_better
-savedir: lissajous_blob_dim500
+savedir: chaos_blob_dim500
 scale_max: 1
 scale_min: -1
 sigma: !!python/tuple
@@ -51,13 +51,13 @@ specs:
   type: dct
 spectral_radius: 1.5
 timings_dictionary:
-- Building of reservoir Whh took 19.61s
-- Transient evolution of dynamical system (for 200 steps) took20.11s
-- Harvesting 1000 Hidden Echo States took 106.45s
-- PCA Dimension reduction of H took 173.04s
-- Least Squares optimization took 3.36s
-- Predicting for 100 time steps took 126.21s
-- 'Total time (no plotting/saving): 471.7s'
+- Building of reservoir Whh took 19.77s
+- Transient evolution of dynamical system (for 200 steps) took19.76s
+- Harvesting 1000 Hidden Echo States took 105.22s
+- PCA Dimension reduction of H took 140.74s
+- Least Squares optimization took 5.61s
+- Predicting for 100 time steps took 50.13s
+- 'Total time (no plotting/saving): 363.8s'
 training_max: !!python/object/apply:numpy.core.multiarray.scalar
 - &id001 !!python/object/apply:numpy.dtype
   args:
@@ -74,9 +74,9 @@ training_max: !!python/object/apply:numpy.core.multiarray.scalar
   - -1
   - 0
 - !!binary |
-  RkSHINX77z8=
+  H2OAJdX77z8=
 training_min: !!python/object/apply:numpy.core.multiarray.scalar
 - *id001
 - !!binary |
-  hBTIHlGxtDw=
+  xZQq35+bvTw=
 upper_sr_calc_dim: 5000
