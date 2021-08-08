@@ -1,0 +1,70 @@
+Model_Errors:
+- 'MSE-IMED: MSE in standardizing-transform-space: 1.18e-02'
+- 'MSE after rescaling,iST of preds and targets: 1.63e+02'
+- 'MSE after rescaling,iST of preds wrt. untouched targets: 1.63e+02'
+Npred: 150
+Ntrain: 1200
+Ntrans: 200
+ST_method: DCT
+cpus_to_use: 32
+dtype: float64
+eps: 0.01
+lstsq_method: svd
+lstsq_thresh: 0.001
+n_PCs: 350
+neuron_connections: 100
+neuron_dist: normal
+plot_prediction: true
+random_seed: '2147483648'
+save_condition: always
+savedir: kuro_dim100
+scale_max: 1
+scale_min: -1
+sigma: !!python/tuple
+- 0.0
+- 1.0
+- 1.0
+specs:
+- factor: 0.5
+  size: !!python/tuple
+  - 290
+  - 440
+  type: pixels
+- factor: 0.5
+  type: gradient
+- factor: 0.5
+  size: !!python/tuple
+  - 20
+  - 20
+  type: dct
+spectral_radius: 0.98
+timings_dictionary:
+- Building of reservoir Whh took 12.36s
+- Transient evolution of dynamical system (for 200 steps) took13.01s
+- Harvesting 1000 Hidden Echo States took 64.71s
+- PCA Dimension reduction of H took 40.43s
+- Least Squares optimization took 1.26s
+- Predicting for 150 time steps took 57.07s
+- 'Total time (no plotting/saving): 196.8s'
+training_max: !!python/object/apply:numpy.core.multiarray.scalar
+- &id001 !!python/object/apply:numpy.dtype
+  args:
+  - f8
+  - false
+  - true
+  state: !!python/tuple
+  - 3
+  - <
+  - null
+  - null
+  - null
+  - -1
+  - -1
+  - 0
+- !!binary |
+  jmrAIeEaZEA=
+training_min: !!python/object/apply:numpy.core.multiarray.scalar
+- *id001
+- !!binary |
+  TmBKC1XrUcA=
+upper_sr_calc_dim: 5000
