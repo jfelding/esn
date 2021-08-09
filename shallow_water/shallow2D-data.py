@@ -1,9 +1,9 @@
 #!/usr/bin/python
-##############################
-# Work of James Emil Avery,  #
-# Associate Professor at the #
-# University of Copenhagen   #
-##############################
+################################
+#  Work of James Emil Avery,   #
+#  Associate Professor at the  #
+#  University of Copenhagen    #
+################################
 import numpy as np
 # import matplotlib.pyplot as plt
 # from matplotlib.animation import FuncAnimation
