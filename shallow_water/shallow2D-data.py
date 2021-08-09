@@ -1,8 +1,9 @@
 #!/usr/bin/python
 ###############################
-#  Work of James Emil Avery,  #
-#  Associate Professor at the #
-#  University of Copenhagen   #
+#  James Avery (Avery@nbi.dk),#
+#  reproduced with permission #
+
+
 ###############################
 import numpy as np
 # import matplotlib.pyplot as plt
