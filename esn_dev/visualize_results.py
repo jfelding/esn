@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from numpy import save, load, nan, arange, mean
+from numpy import save, load, nan, arange, mean, nanmax,nanmin
 import matplotlib.animation as animation
 from esn_dev.utils import score_over_time
 import cmocean.cm as cmo
@@ -26,13 +26,14 @@ def animate_comparison(targets,predictions,kuro=True,filepath='comparison.mp4',f
             predictions[:,mask]=nan
 
     def init():
+        fig.suptitle(f't=0',y=1.2,fontsize='x-large')
         im1.set_data(targets[0],)
         im2.set_data(predictions[0])
         return (im1,im2)
 
     # animation function. This is called sequentially
     def animate(i):
-        fig.suptitle(f't={i:03d}',y=0.85,fontsize='x-large')
+        fig.suptitle(f't={i:03d}',y=1.2,fontsize='x-large')
         im1.set_data(targets[i])
         im2.set_data(predictions[i])
         return (im1,im2)
@@ -143,7 +144,7 @@ def multiplot(data,framelist,
               colorbar_kw = None,
               subplot_kw = None,
               fig_kw = None,
-              gridspec_kw = None):
+              gridspec_kw = None,axis_on=False,targets=None,timeunit=None):
     """
     Use case:
     Show a number of frames from a video sequence
@@ -166,6 +167,15 @@ def multiplot(data,framelist,
     """
     # want plots sorted in time
     framelist.sort()
+    if timeunit is None:
+        namelist = framelist
+    else:
+        namelist = []
+        # Expect timeunit format "3 days" or "5days"
+        time_res = str(timeunit[0])
+        for i in range(len(framelist)):
+            namelist.append(r"$t=t_0$ +"+f" {(int(framelist[i]+1)*int(time_res))} {timeunit[1:]}")
+
     
     def override_kw(default_kw,custom_kw):
         # override default settings with
@@ -187,8 +197,8 @@ def multiplot(data,framelist,
     # colorbar kws
     # including vmin, vmax, cmap
     #min/max of colorbar
-    vmin = data.min()
-    vmax = data.max()
+    vmin = nanmin(data)
+    vmax = nanmax(data)
     colorbar_default = dict(
         orientation='horizontal',
         cmap =cmo.deep_r,
@@ -216,26 +226,77 @@ def multiplot(data,framelist,
         subplot_kw=subplot_kw,
         **fig_kw,
     )
+    axs = axes[:]
     axes = axes.reshape(-1)
-    assert len(axes) == len(framelist)
-    for i, ax in enumerate(axes):
-        im = ax.imshow(data[framelist[i]],origin='lower',
-                       cmap = colorbar_kw['cmap'],
-                       vmin = colorbar_kw['vmin'],
-                       vmax = colorbar_kw['vmax'])
-        time_num = framelist[i]
-        time_str = '$'+f't={framelist[i]}'+'$'
-        ax.set_title(time_str,fontsize='x-large')
-        ax.axis('off') # disable index etc
-    del colorbar_kw['cmap'] #not for use in colorbar()
-    del colorbar_kw['vmin']
-    del colorbar_kw['vmax']
+    if targets is None:
+        assert len(axes) == len(framelist)
+        for i, ax in enumerate(axes):
+            im = ax.imshow(data[framelist[i]],origin='lower',
+                           cmap = colorbar_kw['cmap'],
+                           vmin = colorbar_kw['vmin'],
+                           vmax = colorbar_kw['vmax'])
+            time_num = framelist[i]
+            time_str = ''+f'{namelist[i]}'+''
+            ax.set_title(time_str,fontsize='x-large')
+            if axis_on==False:
+                ax.axis('off') # disable index etc
+        del colorbar_kw['cmap'] #not for use in colorbar()
+        del colorbar_kw['vmin']
+        del colorbar_kw['vmax']
 
-    fig.subplots_adjust(bottom=0.02)
-    #[left, bottom, width, height]
-    cbar_ax = fig.add_axes([0.125, 0., .775, 0.025])
-    cbar = fig.colorbar(im, cax=cbar_ax,**colorbar_kw)
+        fig.subplots_adjust(bottom=0.02)
+        #[left, bottom, width, height]
+        cbar_ax = fig.add_axes([0.125, 0., .775, 0.025])
+        cbar = fig.colorbar(im, cax=cbar_ax,**colorbar_kw)
+    
+    else:
+        #make a comparison plot between data=predictions and targets
+        assert len(axes) == 2*len(framelist)
+        assert len(targets) == len(data)
+        assert fig_kw['ncols'] == 2
+        i = 0
+        axes = axs
+        while i<(fig_kw['nrows']):
+            im = axes[i,1].imshow(data[framelist[i]],origin='lower',
+                           cmap = colorbar_kw['cmap'],
+                           vmin = colorbar_kw['vmin'],
+                           vmax = colorbar_kw['vmax'])
+            time_num = framelist[i]
+            time_str = ''+f'{namelist[i]}'+''
+            axes[i,1].set_title(time_str,fontsize='x-large')
+            # Now, targets
+            im = axes[i,0].imshow(targets[framelist[i]],origin='lower',
+                           cmap = colorbar_kw['cmap'],
+                           vmin = colorbar_kw['vmin'],
+                           vmax = colorbar_kw['vmax'])
+            time_num = framelist[i]
+            time_str = ''+f'{namelist[i]}'+''
+            axes[i,0].set_title(time_str,fontsize='x-large')
+            
+            if axis_on==False:
+                axes[ i,0 ].axis('off') # disable index etc
+                axes[i,1].axis('off')
+            
+            i += 1
+            
+        del colorbar_kw['cmap'] #not for use in colorbar()
+        del colorbar_kw['vmin']
+        del colorbar_kw['vmax']
+        for i, ax in enumerate(axes.flatten()[:2]):
+            if i==0:
+                ax.set_title("Targets\n"+f"{namelist[0]}", fontsize='x-large')
+                
+            if i==1:
+                ax.set_title("Predictions\n"+f"{namelist[0]}", fontsize='x-large')
+
+            fig.subplots_adjust(bottom=0.02)
+        #[left, bottom, width, height]
+        cbar_ax = fig.add_axes([0.125, 0., .775, 0.025])
+        cbar = fig.colorbar(im, cax=cbar_ax,**colorbar_kw)
+    
+    # Save and such.
     if plotname is None:
         plotname = 'multiplot_example.pdf'
+
     fig.savefig(plotname,bbox_inches='tight',dpi=fig_kw['dpi'], format='pdf')
-    return
+    return (fig,axes)

@@ -105,21 +105,12 @@ class InputMap(Operation):
 class PixelsOp(Operation):
     def __init__(self, size):
         self.size = size
-        #self.warned_yet = False
-    
+        
     def __call__(self, img):
         with Image.fromarray(img) as im:
-            im_resized = im.resize(self.size,resample=Image.BILINEAR)
-            """if np.abs(im_resized).max>10 and self.warned_yet not True:
-                print('Warning: `pixels` input map had output\n'
-                       'with values higher than 10. Range of tanh'
-                     '\nas activation function is (-1;1). If many'
-                     'high values are used\nthey will be quashed'
-                     'to the same area')
-                self.warned_yet = True"""
-   
+            im_resized = np.asarray(im.resize(self.size[::-1],resample=Image.BICUBIC))
         
-        return np.asarray(im_resized).reshape(-1)
+        return im_resized.reshape(-1)
     
 
     def output_size(self, input_shape):
