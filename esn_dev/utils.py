@@ -5,8 +5,9 @@ from pathlib import Path
 import yaml
 import sys
 import pyfftw
-from IMED.standardizingTrans_ndim import ST_ndim_DCT, ST_ndim_FFT
+from imed.imed import transform as ST
 from scipy.fft import set_backend
+
 
 def split_train_label_pred(sequence, train_length, pred_length,transient_length=None):
     # if using transient, specifying transient_length = Ntrans is more memory efficient  
@@ -113,20 +114,13 @@ def preprocess(data,scale_min=-1,scale_max=1,training_min=None, training_max=Non
     set must be used to estimate
     training parameters
     """
-    
-    if ST_method == 'DCT':
-        ST = ST_ndim_DCT
-    
-    elif ST_method == 'FFT':
-        ST = ST_ndim_FFT
-
 
     with set_backend(pyfftw.interfaces.scipy_fft), pyfftw.interfaces.scipy_fft.set_workers(cpus_to_use):
                 
         #faster if we enable cache using pyfftw
         pyfftw.interfaces.cache.enable()
         # perform standardizing transform using frequency method of your choice
-        data = ST(data,sigma,eps,inverse)
+        data = ST(data,sigma,inverse,eps,ST_method)
     
     if (training_min is None) or (training_max is None):
         # Assumes training set
