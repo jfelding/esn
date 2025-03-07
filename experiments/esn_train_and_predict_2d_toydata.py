@@ -14,7 +14,7 @@ def train_and_predict_2d(data, specs,
                              Ntrans=500,        # Number of transient initial steps before training
                              Ntrain=2500,       # Number of steps to train on
                              Npred=500,         # Number of steps for free-running prediction
-                             plot_prediction=False,
+                             plot_prediction=True,
                              sigma=(1,5,5),
                              eps=1e-5,
                              n_PCs=None,
@@ -352,7 +352,7 @@ def train_and_predict_2d(data, specs,
 
 def test_lissajous(savedir):
     # Spatial resolution
-    input_shape = (30,30)
+    input_shape = (300,300)
     
     # flattened out dimension
     input_size  = input_shape[0] * input_shape[1]
@@ -424,7 +424,7 @@ def test_lissajous(savedir):
         Ntrans = Ntrans,
         spectral_radius = 1.,
         neuron_connections = 10,
-        n_PCs  = None,
+        n_PCs  = 100,
         sigma  =  (0,2,2),
         eps    =  1e-2,
         plot_prediction = True,
@@ -514,7 +514,7 @@ def test_lissajous(savedir):
         Ntrans = Ntrans,
         spectral_radius = 1.3,
         neuron_connections = 10,
-        n_PCs  = None,
+        n_PCs  = 100,
         sigma  =  (0,2,2),
         eps    =  1e-2,
         plot_prediction = True,
@@ -528,7 +528,7 @@ def test_lissajous(savedir):
         savedir = savedir,
         neuron_dist = 'normal',
         upper_sr_calc_dim=5000,
-        save_condition = 'never',
+        save_condition = 'always',
         random_seed = np.random.seed(),
         
     )
