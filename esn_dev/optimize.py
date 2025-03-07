@@ -92,7 +92,6 @@ def lstsq_sklearn(H,targets,dtype=None):
     """
     regress = LinearRegression(
         fit_intercept=False,
-        normalize=False,
         copy_X=True,
         n_jobs=-1)
     weights = np.linspace(0.3,1.,len(targets))
