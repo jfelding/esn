@@ -5,7 +5,7 @@ from esn_dev.utils import score_over_time
 import cmocean.cm as cmo
 
 
-def animate_comparison(targets,predictions,kuro=True,filepath='comparison.mp4',fps=24,dpi=300, v=(None,None)):
+def animate_comparison(targets,predictions,kuro=False,filepath='comparison.mp4',fps=24,dpi=300, v=(None,None)):
     targets    = targets.copy()
     predictions= predictions.copy()
     if v[0] is None:
